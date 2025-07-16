@@ -1,0 +1,177 @@
+<div class="consultorios-container">
+  <p-toast></p-toast>
+  
+  <div class="header">
+    <div class="header-left">
+      <p-button 
+        icon="pi pi-arrow-left" 
+        styleClass="p-button-outlined p-button-secondary"
+        pTooltip="Regresar al Dashboard"
+        tooltipPosition="bottom"
+        routerLink="/dashboard">
+      </p-button>
+      <h2>Gestión de Consultorios</h2>
+    </div>
+    <p-button 
+      label="Nuevo Consultorio" 
+      icon="pi pi-plus" 
+      styleClass="p-button-primary"
+      (onClick)="openCreateForm()">
+    </p-button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner"></i> Cargando...
+  </div>
+
+  <p-table 
+    *ngIf="!loading"
+    [value]="consultorios" 
+    [paginator]="true" 
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultorios"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-striped">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Ubicación</th>
+        <th>Médico Asignado</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-consultorio>
+      <tr>
+        <td>
+          <p-tag [value]="consultorio.id_consultorio.toString()" severity="info"></p-tag>
+        </td>
+        <td>{{ consultorio.nombre }}</td>
+        <td>
+          <p-tag 
+            [value]="consultorio.tipo" 
+            [severity]="getTipoSeverity(consultorio.tipo)">
+          </p-tag>
+        </td>
+        <td>{{ consultorio.ubicacion || 'N/A' }}</td>
+        <td>
+          <span 
+            [pTooltip]="getMedicoNombre(consultorio.medico_id!) !== 'N/A' ? 'Médico: ' + getMedicoNombre(consultorio.medico_id!) : 'Sin médico asignado'"
+            tooltipPosition="top">
+            {{ getMedicoNombre(consultorio.medico_id!) }}
+          </span>
+        </td>
+        <td>
+          <p-button 
+            icon="pi pi-pencil" 
+            styleClass="p-button-secondary p-button-sm"
+            [pTooltip]="'Editar consultorio'"
+            tooltipPosition="top"
+            (onClick)="openEditForm(consultorio)">
+          </p-button>
+          <p-button 
+            icon="pi pi-trash" 
+            styleClass="p-button-danger p-button-sm"
+            [pTooltip]="'Eliminar consultorio'"
+            tooltipPosition="top"
+            (onClick)="deleteConsultorio(consultorio.id_consultorio!)">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog 
+    [header]="editingConsultorio ? 'Editar Consultorio' : 'Nuevo Consultorio'"
+    [(visible)]="showForm"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="consultorio-dialog"
+    [style]="{width: '600px', maxWidth: '90vw'}">
+    
+    <form [formGroup]="consultorioForm" (ngSubmit)="onSubmit()">
+      <div class="p-field">
+        <label for="nombre">Nombre *</label>
+        <input 
+          type="text" 
+          id="nombre" 
+          formControlName="nombre" 
+          pInputText
+          placeholder="Nombre del consultorio"
+          [class.ng-invalid]="consultorioForm.get('nombre')?.invalid && consultorioForm.get('nombre')?.touched"
+          [class.ng-touched]="consultorioForm.get('nombre')?.touched">
+        <small 
+          *ngIf="consultorioForm.get('nombre')?.invalid && consultorioForm.get('nombre')?.touched" 
+          class="p-error">
+          El nombre es requerido (mínimo 2 caracteres)
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="tipo">Tipo *</label>
+        <p-dropdown 
+          id="tipo"
+          formControlName="tipo"
+          [options]="tiposConsultorio"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccionar tipo de consultorio"
+          [class.ng-invalid]="consultorioForm.get('tipo')?.invalid && consultorioForm.get('tipo')?.touched"
+          [class.ng-touched]="consultorioForm.get('tipo')?.touched">
+        </p-dropdown>
+        <small 
+          *ngIf="consultorioForm.get('tipo')?.invalid && consultorioForm.get('tipo')?.touched" 
+          class="p-error">
+          El tipo es requerido
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="ubicacion">Ubicación</label>
+        <input 
+          type="text" 
+          id="ubicacion" 
+          formControlName="ubicacion" 
+          pInputText
+          placeholder="Ej: Piso 2, Ala Norte">
+      </div>
+
+      <div class="p-field">
+        <label for="medico_id">Médico Asignado</label>
+        <p-dropdown 
+          id="medico_id"
+          formControlName="medico_id"
+          [options]="medicos"
+          optionLabel="nombre"
+          optionValue="id_usuario"
+          placeholder="Seleccione un médico (opcional)"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <p-button 
+        label="Cancelar" 
+        icon="pi pi-times" 
+        styleClass="p-button-secondary"
+        (onClick)="closeForm()">
+      </p-button>
+      <p-button 
+        [label]="editingConsultorio ? 'Actualizar' : 'Crear'" 
+        [icon]="editingConsultorio ? 'pi pi-check' : 'pi pi-plus'"
+        styleClass="p-button-primary"
+        [disabled]="consultorioForm.invalid"
+        (onClick)="onSubmit()">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog></p-confirmDialog>
+</div>

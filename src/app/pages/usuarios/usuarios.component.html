@@ -1,0 +1,180 @@
+<div class="usuarios-container">
+  <div class="header">
+    <div class="header-left">
+      <p-button 
+        icon="pi pi-arrow-left" 
+        styleClass="p-button-outlined p-button-secondary"
+        pTooltip="Regresar al Dashboard"
+        tooltipPosition="bottom"
+        routerLink="/dashboard">
+      </p-button>
+      <h2>Gestión de Usuarios</h2>
+    </div>
+    <p-button 
+      icon="pi pi-plus" 
+      label="Nuevo Usuario" 
+      (onClick)="openCreateForm()"
+      styleClass="p-button-primary">
+    </p-button>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner"></i> Cargando...
+  </div>
+
+  <p-table 
+    *ngIf="!loading" 
+    [value]="usuarios" 
+    [paginator]="true" 
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios"
+    [rowsPerPageOptions]="[10,25,50]"
+    styleClass="p-datatable-gridlines">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Tipo</th>
+        <th>MFA</th>
+        <th>Fecha Creación</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-usuario>
+      <tr>
+        <td>{{ usuario.id_usuario }}</td>
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.email || 'N/A' }}</td>
+        <td>
+          <p-tag 
+            [value]="usuario.tipo" 
+            [severity]="getTagSeverity(usuario.tipo)">
+          </p-tag>
+        </td>
+        <td>
+          <p-tag 
+            [value]="getMFAStatus(usuario)" 
+            [severity]="getMFATagSeverity(usuario)">
+          </p-tag>
+        </td>
+        <td>{{ usuario.created_at | date:'short' }}</td>
+        <td>
+          <p-button 
+            icon="pi pi-pencil" 
+            styleClass="p-button-rounded p-button-text p-button-sm" 
+            (onClick)="openEditForm(usuario)"
+            pTooltip="Editar">
+          </p-button>
+          <p-button 
+            icon="pi pi-trash" 
+            styleClass="p-button-rounded p-button-text p-button-danger p-button-sm" 
+            (onClick)="deleteUsuario(usuario.id_usuario!)"
+            pTooltip="Eliminar">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog 
+    [(visible)]="showForm" 
+    [modal]="true" 
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{width: '500px'}"
+    [header]="editingUsuario ? 'Editar Usuario' : 'Nuevo Usuario'">
+    
+    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+      <div class="p-field">
+        <label for="nombre">Nombre *</label>
+        <input 
+          pInputText 
+          id="nombre" 
+          formControlName="nombre" 
+          [class.ng-invalid]="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched"
+        >
+        <small 
+          *ngIf="usuarioForm.get('nombre')?.invalid && usuarioForm.get('nombre')?.touched" 
+          class="p-error">
+          El nombre es requerido y debe tener al menos 2 caracteres
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="email">Email *</label>
+        <input 
+          pInputText 
+          id="email" 
+          type="email"
+          formControlName="email" 
+          [class.ng-invalid]="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched"
+        >
+        <small 
+          *ngIf="usuarioForm.get('email')?.invalid && usuarioForm.get('email')?.touched" 
+          class="p-error">
+          Ingrese un email válido
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="password">Contraseña {{ editingUsuario ? '(dejar vacío para no cambiar)' : '*' }}</label>
+        <p-password 
+          formControlName="password"
+          [toggleMask]="true"
+          placeholder="Mínimo 12 caracteres con mayúsculas, minúsculas, números y símbolos"
+          [class.ng-invalid]="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched">
+        </p-password>
+        <small 
+          *ngIf="usuarioForm.get('password')?.invalid && usuarioForm.get('password')?.touched" 
+          class="p-error">
+          La contraseña debe tener al menos 12 caracteres
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="tipo">Tipo de Usuario *</label>
+        <p-dropdown 
+          formControlName="tipo"
+          [options]="tipoOptions"
+          placeholder="Seleccione un tipo"
+          optionLabel="label"
+          optionValue="value"
+          [class.ng-invalid]="usuarioForm.get('tipo')?.invalid && usuarioForm.get('tipo')?.touched">
+        </p-dropdown>
+        <small 
+          *ngIf="usuarioForm.get('tipo')?.invalid && usuarioForm.get('tipo')?.touched" 
+          class="p-error">
+          Seleccione un tipo de usuario
+        </small>
+      </div>
+
+      <p-message 
+        *ngIf="!editingUsuario" 
+        severity="info" 
+        text="El usuario deberá configurar la autenticación de dos factores (MFA) en su primer login.">
+      </p-message>
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <p-button 
+        label="Cancelar" 
+        icon="pi pi-times" 
+        styleClass="p-button-text" 
+        (onClick)="closeForm()">
+      </p-button>
+      <p-button 
+        [label]="editingUsuario ? 'Actualizar' : 'Crear'" 
+        icon="pi pi-check" 
+        (onClick)="onSubmit()"
+        [disabled]="usuarioForm.invalid">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+
+  <p-toast></p-toast>
+</div>

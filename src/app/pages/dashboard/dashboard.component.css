@@ -1,0 +1,219 @@
+@import 'primeicons/primeicons.css';
+
+.p-button {
+  margin: 0.25rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.p-button.p-button-outlined {
+  background: transparent;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
+}
+
+.p-button.p-button-outlined:hover {
+  background: #f1f5f9;
+  border-color: #2563eb;
+  color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.p-button.p-button-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.p-button.p-button-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+.p-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.p-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(37, 99, 235, 0.15);
+  background: rgba(255, 255, 255, 1);
+}
+
+.p-card .p-card-body {
+  padding: 30px;
+}
+
+.p-card .p-card-content {
+  padding: 0;
+}
+
+.p-toast {
+  z-index: 1100;
+}
+
+.p-tooltip {
+  z-index: 1200;
+}
+
+.p-avatar {
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  color: white;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.p-avatar.p-avatar-xl {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+}
+
+.p-divider {
+  margin: 20px 0;
+  border-color: #e2e8f0;
+}
+
+.p-panel {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.p-panel .p-panel-header {
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  color: white;
+  border-bottom: none;
+  padding: 20px;
+  border-radius: 16px 16px 0 0;
+}
+
+.p-panel .p-panel-content {
+  padding: 20px;
+}
+
+.dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  padding: 0;
+}
+
+.dashboard-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #2563eb;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.welcome-text {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.dashboard-main {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.card-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.card-icon i {
+  font-size: 24px;
+  color: white;
+}
+
+.card-content h3 {
+  margin: 0 0 10px 0;
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-content p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .dashboard-main {
+    padding: 20px;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .p-card .p-card-body {
+    padding: 20px;
+  }
+}

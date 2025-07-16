@@ -1,0 +1,413 @@
+@import 'primeicons/primeicons.css';
+
+.p-button {
+  margin: 0.25rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.p-button.p-button-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.p-button.p-button-primary:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.p-button.p-button-secondary {
+  background-color: #059669;
+  border-color: #059669;
+  margin-right: 5px;
+}
+
+.p-button.p-button-secondary:hover {
+  background-color: #047857;
+  border-color: #047857;
+}
+
+.p-button.p-button-danger {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+.p-button.p-button-danger:hover {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.p-button.p-button-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.p-datatable {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.p-datatable .p-datatable-header {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  border-bottom: none;
+  padding: 1rem;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem;
+  border: none;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background-color: #f1f5f9;
+}
+
+.p-dialog {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  max-height: 90vh;
+  position: relative;
+}
+
+.p-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  color: white;
+  border-bottom: none;
+  padding: 1rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.p-dialog .p-dialog-content {
+  padding: 1.25rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.p-dialog .p-dialog-footer {
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.p-inputtext {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.p-inputtext:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.p-inputtext.ng-invalid.ng-touched {
+  border-color: #dc2626;
+}
+
+.p-inputtext.ng-invalid.ng-touched:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.p-dropdown {
+  width: 100%;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Solución específica para el dropdown de médicos */
+:host ::ng-deep .p-dialog .p-dropdown-panel {
+  position: absolute !important;
+  z-index: 1000 !important;
+  max-height: 150px !important;
+  overflow-y: auto !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  background: white !important;
+  width: 100% !important;
+}
+
+/* Asegurar que el dropdown se posicione correctamente */
+:host ::ng-deep .p-dialog .p-dropdown {
+  position: relative !important;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown .p-dropdown-trigger {
+  position: relative !important;
+}
+
+/* Estilos para los items del dropdown */
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-items {
+  max-height: 130px !important;
+  overflow-y: auto !important;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-item {
+  padding: 0.5rem 0.75rem !important;
+  transition: background-color 0.2s ease !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-item:hover {
+  background-color: #f1f5f9 !important;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-item.p-highlight {
+  background-color: #2563eb !important;
+  color: white !important;
+}
+
+/* Scroll personalizado para el dropdown */
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-items::-webkit-scrollbar {
+  width: 4px;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-items::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 2px;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-items::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 2px;
+}
+
+:host ::ng-deep .p-dialog .p-dropdown-panel .p-dropdown-items::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Asegurar que el contenido del formulario tenga espacio suficiente */
+.p-field {
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+/* Espacio extra para el último campo con dropdown */
+.p-field:last-of-type {
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+}
+
+/* Scroll personalizado para el contenido del diálogo */
+.p-dialog .p-dialog-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.p-dialog .p-dialog-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.p-dialog .p-dialog-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.p-dialog .p-dialog-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Asegurar que el overlay del modal no interfiera */
+:host ::ng-deep .p-dialog-mask {
+  z-index: 1000 !important;
+}
+
+/* Estilos específicos para el diálogo de consultorio */
+:host ::ng-deep .consultorio-dialog {
+  z-index: 1000 !important;
+}
+
+:host ::ng-deep .consultorio-dialog .p-dialog {
+  z-index: 1001 !important;
+}
+
+.p-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 1rem;
+  border: 1px solid #e2e8f0;
+}
+
+.p-field {
+  margin-bottom: 1rem;
+}
+
+.p-field label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.p-error {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.p-toast {
+  z-index: 1100;
+}
+
+.p-tag {
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.p-tag.p-tag-success {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.p-tag.p-tag-info {
+  background-color: #e0f2fe;
+  color: #0891b2;
+}
+
+.p-tag.p-tag-warning {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.p-tooltip {
+  z-index: 10000;
+}
+
+.p-message {
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.p-message.p-message-error {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+}
+
+.p-message.p-message-success {
+  background-color: #dcfce7;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+.p-confirmdialog {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.consultorios-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #2563eb 0%, #059669 100%);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #64748b;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+
+.form-row .p-field {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.col-md-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+@media (max-width: 768px) {
+  .col-md-4,
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .p-datatable {
+    overflow-x: auto;
+  }
+}

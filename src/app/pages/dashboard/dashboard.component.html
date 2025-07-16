@@ -1,0 +1,47 @@
+<div class="dashboard-container">
+  <p-toast></p-toast>
+  
+  <header class="dashboard-header">
+    <h1>Sistema Hospitalario</h1>
+    <div class="header-actions">
+      <span class="welcome-text">Bienvenido {{ userName }} ({{ userType }})</span>
+      <p-button 
+        label="Cerrar Sesión" 
+        icon="pi pi-sign-out" 
+        styleClass="p-button-outlined"
+        [pTooltip]="'Cerrar sesión del sistema'"
+        tooltipPosition="bottom"
+        (onClick)="logout()">
+      </p-button>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="dashboard-grid">
+      <p-card 
+        *ngFor="let module of availableModules"
+        [pTooltip]="module.description"
+        tooltipPosition="top"
+        (click)="navigateTo(module.route)"
+        class="module-card">
+        <ng-template pTemplate="header">
+          <div class="card-icon">
+            <i [class]="module.icon"></i>
+          </div>
+        </ng-template>
+        <div class="card-content">
+          <h3>{{ module.name }}</h3>
+          <p>{{ module.description }}</p>
+        </div>
+      </p-card>
+      
+      <!-- Mensaje cuando no hay módulos disponibles -->
+      <div *ngIf="availableModules.length === 0" class="no-modules">
+        <p-panel header="Sin módulos disponibles">
+          <p>No tienes permisos para acceder a ningún módulo del sistema.</p>
+          <p>Contacta al administrador si crees que esto es un error.</p>
+        </p-panel>
+      </div>
+    </div>
+  </main>
+</div>

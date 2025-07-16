@@ -1,0 +1,232 @@
+<div class="horarios-container">
+  <div class="header">
+    <div class="header-left">
+      <p-button 
+        icon="pi pi-arrow-left" 
+        styleClass="p-button-outlined p-button-secondary"
+        pTooltip="Regresar al Dashboard"
+        tooltipPosition="bottom"
+        routerLink="/dashboard">
+      </p-button>
+      <h2>Gestión de Horarios</h2>
+    </div>
+    <p-button 
+      label="Nuevo Horario" 
+      icon="pi pi-plus" 
+      (onClick)="openCreateForm()"
+      styleClass="p-button-primary">
+    </p-button>
+  </div>
+
+  <p-message 
+    *ngIf="errorMessage" 
+    severity="error" 
+    [text]="errorMessage"
+    [closable]="true"
+    (onClose)="clearMessages()">
+  </p-message>
+  
+  <p-message 
+    *ngIf="successMessage" 
+    severity="success" 
+    [text]="successMessage"
+    [closable]="true"
+    (onClose)="clearMessages()">
+  </p-message>
+
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Cargando horarios...</p>
+  </div>
+
+  <p-table 
+    *ngIf="!loading"
+    [value]="horarios" 
+    [paginator]="true" 
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} horarios"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    styleClass="p-datatable-striped"
+    responsiveLayout="scroll">
+    
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="id_horario">
+          ID <p-sortIcon field="id_horario"></p-sortIcon>
+        </th>
+        <th>Consultorio</th>
+        <th>Médico</th>
+        <th pSortableColumn="turno">
+          Turno <p-sortIcon field="turno"></p-sortIcon>
+        </th>
+        <th>Consulta ID</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-horario>
+      <tr>
+        <td>
+          <p-tag [value]="horario.id_horario.toString()" severity="info"></p-tag>
+        </td>
+        <td>
+          <span pTooltip="{{ getConsultorioNombre(horario.consultorio_id) }}" tooltipPosition="top">
+            {{ getConsultorioNombre(horario.consultorio_id) }}
+          </span>
+        </td>
+        <td>
+          <span pTooltip="{{ getMedicoNombre(horario.medico_id) }}" tooltipPosition="top">
+            {{ getMedicoNombre(horario.medico_id) }}
+          </span>
+        </td>
+        <td>
+          <p-tag 
+            [value]="horario.turno" 
+            [severity]="getTurnoSeverity(horario.turno)"
+            styleClass="turno-badge">
+          </p-tag>
+        </td>
+        <td>
+          <p-tag 
+            *ngIf="horario.consulta_id; else noConsulta"
+            [value]="horario.consulta_id.toString()" 
+            severity="secondary">
+          </p-tag>
+          <ng-template #noConsulta>
+            <span style="color: #6c757d; font-style: italic;">N/A</span>
+          </ng-template>
+        </td>
+        <td>
+          <p-button 
+            icon="pi pi-pencil" 
+            styleClass="p-button-rounded p-button-text p-button-secondary p-button-sm"
+            (onClick)="openEditForm(horario)"
+            pTooltip="Editar horario"
+            tooltipPosition="top">
+          </p-button>
+          <p-button 
+            icon="pi pi-trash" 
+            styleClass="p-button-rounded p-button-text p-button-danger p-button-sm"
+            (onClick)="confirmDelete(horario.id_horario!)"
+            pTooltip="Eliminar horario"
+            tooltipPosition="top">
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 2rem;">
+          <i class="pi pi-info-circle" style="font-size: 2rem; color: #6c757d;"></i>
+          <p style="margin-top: 1rem; color: #6c757d;">No se encontraron horarios</p>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog 
+    [header]="editingHorario ? 'Editar Horario' : 'Nuevo Horario'"
+    [(visible)]="showForm"
+    [modal]="true"
+    [style]="{width: '500px'}"
+    [draggable]="false"
+    [resizable]="false"
+    styleClass="p-fluid">
+    
+    <form [formGroup]="horarioForm" (ngSubmit)="onSubmit()">
+      <div class="p-field">
+        <label for="consultorio_id">Consultorio *</label>
+        <p-dropdown 
+          id="consultorio_id"
+          formControlName="consultorio_id"
+          [options]="consultorioOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccione un consultorio"
+          [class.ng-invalid]="horarioForm.get('consultorio_id')?.invalid && horarioForm.get('consultorio_id')?.touched"
+          [class.ng-touched]="horarioForm.get('consultorio_id')?.touched">
+        </p-dropdown>
+        <small class="p-error" *ngIf="horarioForm.get('consultorio_id')?.invalid && horarioForm.get('consultorio_id')?.touched">
+          Seleccione un consultorio
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="medico_id">Médico *</label>
+        <p-dropdown 
+          id="medico_id"
+          formControlName="medico_id"
+          [options]="medicoOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccione un médico"
+          [class.ng-invalid]="horarioForm.get('medico_id')?.invalid && horarioForm.get('medico_id')?.touched"
+          [class.ng-touched]="horarioForm.get('medico_id')?.touched">
+        </p-dropdown>
+        <small class="p-error" *ngIf="horarioForm.get('medico_id')?.invalid && horarioForm.get('medico_id')?.touched">
+          Seleccione un médico
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="turno">Turno *</label>
+        <p-dropdown 
+          id="turno"
+          formControlName="turno"
+          [options]="turnoOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccione un turno"
+          [class.ng-invalid]="horarioForm.get('turno')?.invalid && horarioForm.get('turno')?.touched"
+          [class.ng-touched]="horarioForm.get('turno')?.touched">
+        </p-dropdown>
+        <small class="p-error" *ngIf="horarioForm.get('turno')?.invalid && horarioForm.get('turno')?.touched">
+          Seleccione un turno
+        </small>
+      </div>
+
+      <div class="p-field">
+        <label for="consulta_id">Consulta (Opcional)</label>
+        <p-dropdown 
+          id="consulta_id"
+          formControlName="consulta_id"
+          [options]="consultaOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleccione una consulta"
+          [showClear]="true">
+        </p-dropdown>
+      </div>
+    </form>
+    
+    <ng-template pTemplate="footer">
+      <p-button 
+        label="Cancelar" 
+        icon="pi pi-times" 
+        styleClass="p-button-text p-button-secondary"
+        (onClick)="closeForm()">
+      </p-button>
+      <p-button 
+        [label]="editingHorario ? 'Actualizar' : 'Crear'" 
+        [icon]="loading ? 'pi pi-spin pi-spinner' : (editingHorario ? 'pi pi-check' : 'pi pi-plus')"
+        styleClass="p-button-primary"
+        [disabled]="horarioForm.invalid || loading"
+        (onClick)="onSubmit()">
+      </p-button>
+    </ng-template>
+  </p-dialog>
+
+  <p-confirmDialog 
+    header="Confirmar eliminación"
+    message="¿Está seguro de que desea eliminar este horario?"
+    icon="pi pi-exclamation-triangle"
+    acceptLabel="Sí, eliminar"
+    rejectLabel="Cancelar"
+    acceptButtonStyleClass="p-button-danger"
+    rejectButtonStyleClass="p-button-text">
+  </p-confirmDialog>
+
+  <p-toast position="top-right"></p-toast>
+</div>
