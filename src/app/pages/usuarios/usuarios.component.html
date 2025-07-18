@@ -87,7 +87,8 @@
     [draggable]="false"
     [resizable]="false"
     [style]="{width: '500px'}"
-    [header]="editingUsuario ? 'Editar Usuario' : 'Nuevo Usuario'">
+    [header]="editingUsuario ? 'Editar Usuario' : 'Nuevo Usuario'"
+    [baseZIndex]="1000">
     
     <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
       <div class="p-field">
