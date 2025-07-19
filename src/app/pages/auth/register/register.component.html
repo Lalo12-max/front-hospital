@@ -1,104 +1,111 @@
 <div class="auth-form-container">
   <p-toast></p-toast>
-  <p-card>
+ <p-card styleClass="register-card" [style]="{width: '1200px', 'max-width': '95vw'}">
     <div class="text-center">
       <h1>Registro</h1>
       <p>Crear nueva cuenta en el sistema</p>
     </div>
     
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <div class="p-field">
-        <label for="nombre">Nombre Completo</label>
-        <input 
-          pInputText 
-          id="nombre" 
-          formControlName="nombre" 
-          placeholder="Ingresa tu nombre completo"
-          [class.ng-invalid]="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
-        />
-        <small 
-          class="p-error" 
-          *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
-        >
-          El nombre es requerido
-        </small>
-      </div>
-      
-      <div class="p-field">
-        <label for="email">Correo Electrónico</label>
-        <input 
-          pInputText 
-          id="email" 
-          formControlName="email" 
-          placeholder="ejemplo@hospital.com"
-          [class.ng-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-        />
-        <small 
-          class="p-error" 
-          *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-        >
-          El correo electrónico es requerido y debe ser válido
-        </small>
-      </div>
-      
-      <div class="p-field">
-        <label for="password">Contraseña</label>
-        <p-password 
-          formControlName="password" 
-          placeholder="Mínimo 12 caracteres con símbolos y números"
-          [toggleMask]="true"
-          [feedback]="false"
-          (input)="onPasswordChange($event)"
-        ></p-password>
-        
-        <div class="password-requirements" *ngIf="registerForm.get('password')?.value">
-          <div class="requirement-item" [class.valid]="passwordValidation.length">
-            <i class="pi" [class.pi-check]="passwordValidation.length" [class.pi-times]="!passwordValidation.length"></i>
-            Mínimo 12 caracteres
-          </div>
-          <div class="requirement-item" [class.valid]="passwordValidation.hasNumber">
-            <i class="pi" [class.pi-check]="passwordValidation.hasNumber" [class.pi-times]="!passwordValidation.hasNumber"></i>
-            Al menos un número
-          </div>
-          <div class="requirement-item" [class.valid]="passwordValidation.hasLower">
-            <i class="pi" [class.pi-check]="passwordValidation.hasLower" [class.pi-times]="!passwordValidation.hasLower"></i>
-            Al menos una letra minúscula
-          </div>
-          <div class="requirement-item" [class.valid]="passwordValidation.hasUpper">
-            <i class="pi" [class.pi-check]="passwordValidation.hasUpper" [class.pi-times]="!passwordValidation.hasUpper"></i>
-            Al menos una letra mayúscula
-          </div>
-          <div class="requirement-item" [class.valid]="passwordValidation.hasSymbol">
-            <i class="pi" [class.pi-check]="passwordValidation.hasSymbol" [class.pi-times]="!passwordValidation.hasSymbol"></i>
-            Al menos un símbolo (!&#64;#$%^&*)
-          </div>
+      <!-- Primera fila: Nombre y Email -->
+      <div class="form-row">
+        <div class="p-field">
+          <label for="nombre">Nombre Completo</label>
+          <input 
+            pInputText 
+            id="nombre" 
+            formControlName="nombre" 
+            placeholder="Ingresa tu nombre completo"
+            [class.ng-invalid]="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
+          />
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched"
+          >
+            El nombre es requerido
+          </small>
         </div>
         
-        <small 
-          class="p-error" 
-          *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
-        >
-          La contraseña debe cumplir con todos los requisitos de seguridad
-        </small>
+        <div class="p-field">
+          <label for="email">Correo Electrónico</label>
+          <input 
+            pInputText 
+            id="email" 
+            formControlName="email" 
+            placeholder="ejemplo@hospital.com"
+            [class.ng-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+          />
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+          >
+            El correo electrónico es requerido y debe ser válido
+          </small>
+        </div>
       </div>
       
-      <div class="p-field">
-        <label for="confirmPassword">Confirmar Contraseña</label>
-        <p-password 
-          formControlName="confirmPassword" 
-          placeholder="Repite tu contraseña"
-          [toggleMask]="true"
-          [feedback]="false"
-        ></p-password>
-        <small 
-          class="p-error" 
-          *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched"
-        >
-          Las contraseñas no coinciden
-        </small>
+      <!-- Segunda fila: Contraseñas -->
+      <div class="form-row">
+        <div class="p-field">
+          <label for="password">Contraseña</label>
+          <p-password 
+            formControlName="password" 
+            placeholder="Mínimo 12 caracteres con símbolos y números"
+            [toggleMask]="true"
+            [feedback]="false"
+            (input)="onPasswordChange($event)"
+          ></p-password>
+          
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          >
+            La contraseña debe cumplir con todos los requisitos de seguridad
+          </small>
+        </div>
+        
+        <div class="p-field">
+          <label for="confirmPassword">Confirmar Contraseña</label>
+          <p-password 
+            formControlName="confirmPassword" 
+            placeholder="Repite tu contraseña"
+            [toggleMask]="true"
+            [feedback]="false"
+          ></p-password>
+          <small 
+            class="p-error" 
+            *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched"
+          >
+            Las contraseñas no coinciden
+          </small>
+        </div>
       </div>
       
-      <div class="p-field">
+      <!-- Requisitos de contraseña en fila completa -->
+      <div class="password-requirements" *ngIf="registerForm.get('password')?.value">
+        <div class="requirement-item" [class.valid]="passwordValidation.length">
+          <i class="pi" [class.pi-check]="passwordValidation.length" [class.pi-times]="!passwordValidation.length"></i>
+          Mínimo 12 caracteres
+        </div>
+        <div class="requirement-item" [class.valid]="passwordValidation.hasNumber">
+          <i class="pi" [class.pi-check]="passwordValidation.hasNumber" [class.pi-times]="!passwordValidation.hasNumber"></i>
+          Al menos un número
+        </div>
+        <div class="requirement-item" [class.valid]="passwordValidation.hasLower">
+          <i class="pi" [class.pi-check]="passwordValidation.hasLower" [class.pi-times]="!passwordValidation.hasLower"></i>
+          Al menos una letra minúscula
+        </div>
+        <div class="requirement-item" [class.valid]="passwordValidation.hasUpper">
+          <i class="pi" [class.pi-check]="passwordValidation.hasUpper" [class.pi-times]="!passwordValidation.hasUpper"></i>
+          Al menos una letra mayúscula
+        </div>
+        <div class="requirement-item" [class.valid]="passwordValidation.hasSymbol">
+          <i class="pi" [class.pi-check]="passwordValidation.hasSymbol" [class.pi-times]="!passwordValidation.hasSymbol"></i>
+          Al menos un símbolo (!&#64;#$%^&*)
+        </div>
+      </div>
+      
+      <div class="p-field button-field">
         <p-button 
           label="Registrarse" 
           type="submit" 

@@ -10,7 +10,9 @@
       </p-button>
       <h1>Gestión de Recetas</h1>
     </div>
+    <!-- Modificar esta sección para mostrar el botón solo si no es paciente -->
     <p-button 
+      *ngIf="canCreateReceta"
       label="Nueva Receta" 
       icon="pi pi-plus" 
       (onClick)="openModal()"
@@ -81,7 +83,9 @@
           </span>
         </td>
         <td>
+          <!-- Mostrar botones solo si no es paciente -->
           <p-button 
+            *ngIf="canCreateReceta"
             icon="pi pi-pencil" 
             styleClass="p-button-rounded p-button-text p-button-secondary p-button-sm"
             (onClick)="openModal(receta)"
@@ -89,12 +93,17 @@
             tooltipPosition="top">
           </p-button>
           <p-button 
+            *ngIf="canCreateReceta"
             icon="pi pi-trash" 
             styleClass="p-button-rounded p-button-text p-button-danger p-button-sm"
             (onClick)="deleteReceta(receta.id_receta!)"
             pTooltip="Eliminar receta"
             tooltipPosition="top">
           </p-button>
+          <!-- Mostrar mensaje informativo para pacientes -->
+          <span *ngIf="!canCreateReceta" class="patient-info">
+            Solo lectura
+          </span>
         </td>
       </tr>
     </ng-template>

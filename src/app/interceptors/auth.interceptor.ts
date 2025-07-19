@@ -22,9 +22,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         localStorage.removeItem('refresh_token');
         router.navigate(['/login']);
       } else if (error.status === 403) {
-        // Manejar errores de permisos
+        
         console.error('Permisos insuficientes:', error.error);
-        // Podrías mostrar un mensaje de error o redirigir a una página de "sin permisos"
+       
       }
       return throwError(() => error);
     })

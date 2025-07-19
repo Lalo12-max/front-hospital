@@ -17,8 +17,9 @@ import { MessageService } from 'primeng/api';
 import { RecetaService } from '../../services/receta.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { ConsultorioService } from '../../services/consultorio.service';
+import { AuthService } from '../../services/auth.service'; // Agregar esta línea
 import { Receta, CreateRecetaRequest } from '../../models/receta.model';
-import { Usuario } from '../../models/usuario.model';
+import { Usuario, TipoUsuario } from '../../models/usuario.model'; // Agregar TipoUsuario
 import { Consultorio } from '../../models/consultorio.model';
 
 @Component({
@@ -47,7 +48,6 @@ export class RecetasComponent implements OnInit {
   usuarios: Usuario[] = [];
   consultorios: Consultorio[] = [];
   
- 
   medicos: any[] = [];
   pacientes: any[] = [];
   consultorioOptions: any[] = [];
@@ -58,11 +58,16 @@ export class RecetasComponent implements OnInit {
   currentRecetaId: number | null = null;
   loading = false;
   error: string | null = null;
+  
+  // Agregar estas propiedades para el control de permisos
+  currentUserType: string | null = null;
+  canCreateReceta = false;
 
   constructor(
     private recetaService: RecetaService,
     private usuarioService: UsuarioService,
     private consultorioService: ConsultorioService,
+    private authService: AuthService, // Agregar esta línea
     private fb: FormBuilder,
     private messageService: MessageService
   ) {
@@ -77,9 +82,21 @@ export class RecetasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadUserPermissions(); // Agregar esta línea
     this.loadRecetas();
     this.loadUsuarios();
     this.loadConsultorios();
+  }
+
+  // Agregar este método
+  loadUserPermissions(): void {
+    this.currentUserType = this.authService.getUserType();
+    console.log('Tipo de usuario actual en recetas:', this.currentUserType);
+    
+    // Solo permitir crear recetas si NO es paciente
+    this.canCreateReceta = this.currentUserType !== TipoUsuario.PACIENTE;
+    
+    console.log('¿Puede crear recetas?', this.canCreateReceta);
   }
 
   loadRecetas(): void {

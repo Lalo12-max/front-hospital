@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router'; // Agregar esta línea
+import { RouterModule } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { Expediente, CreateExpedienteRequest } from '../../models/expediente.model';
 import { ExpedienteService } from '../../services/expediente.service';
 import { UsuarioService } from '../../services/usuario.service';
+import { AuthService } from '../../services/auth.service'; // Agregar esta línea
 import { Usuario, TipoUsuario } from '../../models/usuario.model';
 
 @Component({
@@ -26,7 +27,7 @@ import { Usuario, TipoUsuario } from '../../models/usuario.model';
     CommonModule, 
     FormsModule, 
     ReactiveFormsModule,
-    RouterModule, // Agregar esta línea
+    RouterModule,
     ButtonModule,
     TableModule,
     DialogModule,
@@ -50,10 +51,15 @@ export class ExpedientesComponent implements OnInit {
   pacientes: Usuario[] = [];
   errorMessage = '';
   successMessage = '';
+  
+  // Agregar estas propiedades para el control de permisos
+  currentUserType: string | null = null;
+  canCreateExpediente = false;
 
   constructor(
     private expedienteService: ExpedienteService,
     private usuarioService: UsuarioService,
+    private authService: AuthService, // Agregar esta línea
     private fb: FormBuilder,
     private messageService: MessageService
   ) {
@@ -66,8 +72,20 @@ export class ExpedientesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadUserPermissions(); // Agregar esta línea
     this.loadExpedientes();
     this.loadPacientes();
+  }
+
+  // Agregar este método
+  loadUserPermissions(): void {
+    this.currentUserType = this.authService.getUserType();
+    console.log('Tipo de usuario actual en expedientes:', this.currentUserType);
+    
+    // Solo permitir crear expedientes si NO es paciente
+    this.canCreateExpediente = this.currentUserType !== TipoUsuario.PACIENTE;
+    
+    console.log('¿Puede crear expedientes?', this.canCreateExpediente);
   }
 
   loadExpedientes(): void {

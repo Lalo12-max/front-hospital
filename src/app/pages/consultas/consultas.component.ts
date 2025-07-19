@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router'; // Agregar esta línea
+import { RouterModule } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -20,7 +20,8 @@ import { Consulta, CreateConsultaRequest } from '../../models/consulta.model';
 import { ConsultaService } from '../../services/consulta.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { ConsultorioService } from '../../services/consultorio.service';
-import { Usuario } from '../../models/usuario.model';
+import { AuthService } from '../../services/auth.service'; // Agregar esta línea
+import { Usuario, TipoUsuario } from '../../models/usuario.model';
 import { Consultorio } from '../../models/consultorio.model';
 
 @Component({
@@ -30,7 +31,7 @@ import { Consultorio } from '../../models/consultorio.model';
     CommonModule, 
     FormsModule, 
     ReactiveFormsModule,
-    RouterModule, // Agregar esta línea
+    RouterModule,
     ButtonModule,
     TableModule,
     DialogModule,
@@ -56,6 +57,10 @@ export class ConsultasComponent implements OnInit {
   medicos: Usuario[] = [];
   pacientes: Usuario[] = [];
   consultorios: Consultorio[] = [];
+  
+  // Agregar estas propiedades para el control de permisos
+  currentUserType: string | null = null;
+  canCreateConsulta = false;
 
   consultorioOptions: any[] = [];
   medicoOptions: any[] = [];
@@ -71,6 +76,7 @@ export class ConsultasComponent implements OnInit {
     private consultaService: ConsultaService,
     private usuarioService: UsuarioService,
     private consultorioService: ConsultorioService,
+    private authService: AuthService, // Agregar esta línea
     private fb: FormBuilder,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -87,9 +93,21 @@ export class ConsultasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadUserPermissions(); // Agregar esta línea
     this.loadConsultas();
     this.loadUsuarios();
     this.loadConsultorios();
+  }
+
+  // Agregar este método
+  loadUserPermissions(): void {
+    this.currentUserType = this.authService.getUserType();
+    console.log('Tipo de usuario actual:', this.currentUserType);
+    
+    // Solo permitir crear consultas si NO es paciente
+    this.canCreateConsulta = this.currentUserType !== TipoUsuario.PACIENTE;
+    
+    console.log('¿Puede crear consultas?', this.canCreateConsulta);
   }
 
   loadConsultas(): void {

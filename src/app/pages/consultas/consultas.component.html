@@ -13,7 +13,9 @@
       </p-button>
       <h2>Gestión de Consultas</h2>
     </div>
+    <!-- Modificar esta sección para mostrar el botón solo si no es paciente -->
     <p-button 
+      *ngIf="canCreateConsulta"
       label="Nueva Consulta" 
       icon="pi pi-plus" 
       (click)="openCreateForm()"
@@ -70,7 +72,9 @@
           <td>{{ consulta.costo | currency:'USD':'symbol':'1.2-2' }}</td>
           <td>
             <div class="action-buttons">
+              <!-- Mostrar botones solo si no es paciente -->
               <p-button 
+                *ngIf="canCreateConsulta"
                 icon="pi pi-pencil" 
                 styleClass="p-button-rounded p-button-text p-button-warning"
                 (click)="openEditForm(consulta)"
@@ -78,12 +82,17 @@
                 tooltipPosition="top">
               </p-button>
               <p-button 
+                *ngIf="canCreateConsulta"
                 icon="pi pi-trash" 
                 styleClass="p-button-rounded p-button-text p-button-danger"
                 (click)="deleteConsulta(consulta.id_consulta!)"
                 pTooltip="Eliminar"
                 tooltipPosition="top">
               </p-button>
+              <!-- Mostrar mensaje informativo para pacientes -->
+              <span *ngIf="!canCreateConsulta" class="patient-info">
+                Solo lectura
+              </span>
             </div>
           </td>
         </tr>

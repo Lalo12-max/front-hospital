@@ -12,7 +12,9 @@
       </p-button>
       <h2>Gestión de Expedientes</h2>
     </div>
+    <!-- Modificar esta sección para mostrar el botón solo si no es paciente -->
     <p-button 
+      *ngIf="canCreateExpediente"
       label="Nuevo Expediente" 
       icon="pi pi-plus" 
       styleClass="p-button-primary"
@@ -85,20 +87,29 @@
         </td>
         <td>{{ expediente.seguro || 'N/A' }}</td>
         <td>
-          <p-button 
-            icon="pi pi-pencil" 
-            styleClass="p-button-secondary p-button-sm"
-            [pTooltip]="'Editar expediente'"
-            tooltipPosition="top"
-            (onClick)="openEditForm(expediente)">
-          </p-button>
-          <p-button 
-            icon="pi pi-trash" 
-            styleClass="p-button-danger p-button-sm"
-            [pTooltip]="'Eliminar expediente'"
-            tooltipPosition="top"
-            (onClick)="deleteExpediente(expediente.id_expediente!)">
-          </p-button>
+          <div class="action-buttons">
+            <!-- Mostrar botones solo si no es paciente -->
+            <p-button 
+              *ngIf="canCreateExpediente"
+              icon="pi pi-pencil" 
+              styleClass="p-button-rounded p-button-text p-button-warning"
+              (click)="openEditForm(expediente)"
+              pTooltip="Editar"
+              tooltipPosition="top">
+            </p-button>
+            <p-button 
+              *ngIf="canCreateExpediente"
+              icon="pi pi-trash" 
+              styleClass="p-button-rounded p-button-text p-button-danger"
+              (click)="deleteExpediente(expediente.id_expediente!)"
+              pTooltip="Eliminar"
+              tooltipPosition="top">
+            </p-button>
+            <!-- Mostrar mensaje informativo para pacientes -->
+            <span *ngIf="!canCreateExpediente" class="patient-info">
+              Solo lectura
+            </span>
+          </div>
         </td>
       </tr>
     </ng-template>

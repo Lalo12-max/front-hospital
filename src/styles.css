@@ -69,12 +69,12 @@ html, body {
 }
 
 .p-button.p-button-secondary {
-    background-color: var(--secondary-color);
+    background-color: #960505;
     border-color: var(--secondary-color);
 }
 
 .p-button.p-button-secondary:hover {
-    background-color: var(--secondary-color-dark);
+    background-color: #67648b;
     border-color: var(--secondary-color-dark);
 }
 
@@ -294,7 +294,7 @@ html, body {
     padding: 2rem 2rem 1rem 2rem;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
-    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
@@ -501,4 +501,459 @@ a:hover {
     .auth-form-container .p-card .p-card-header h1 {
         font-size: 1.5rem;
     }
+}
+
+/* Estilos específicos para el formulario de login usando el mismo diseño */
+.auth-form-container .register-card {
+  /* Reutilizar todos los estilos del registro */
+}
+
+/* Ajustes específicos para login que tiene menos campos */
+.auth-form-container .register-card .form-row {
+  /* Para login, mantener la estructura de dos columnas en desktop */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Campo MFA que ocupa toda la fila */
+.auth-form-container .register-card .p-field:has(input[formControlName="totp_code"]) {
+  grid-column: 1 / -1;
+}
+
+/* Texto de ayuda más compacto */
+.p-help {
+  font-size: 0.75rem !important;
+  color: var(--text-color-secondary) !important;
+  margin-top: 0.25rem !important;
+  display: block;
+  line-height: 1.3;
+}
+
+/* Responsive para login */
+@media (max-width: 768px) {
+  .auth-form-container .register-card .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.register-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08), 0 6px 12px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+  max-width: 600px !important; /* Aún más pequeño */
+}
+
+.register-card .p-card-body {
+  padding: 1.25rem !important; /* Más compacto */
+}
+
+.register-card h1 {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 1.6rem; /* Más pequeño */
+  margin-bottom: 0.15rem; /* Casi sin margen */
+}
+
+.register-card p {
+  color: var(--text-color-secondary);
+  font-size: 0.85rem; /* Más pequeño */
+  margin-bottom: 0.75rem; /* Menos espacio */
+}
+
+/* Filas del formulario súper compactas */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem; /* Menos espacio entre columnas */
+  margin-bottom: 0.75rem; /* Menos espacio entre filas */
+}
+
+/* Campos ultra compactos */
+.p-field {
+  margin-bottom: 0.5rem !important; /* Sobrescribir el margen por defecto */
+}
+
+.p-field label {
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.2rem; /* Muy poco espacio */
+  display: block;
+  font-size: 0.8rem; /* Más pequeño */
+  letter-spacing: 0.3px;
+}
+
+.p-field input,
+.p-field .p-password input {
+  border-radius: 6px !important;
+  border: 2px solid #e2e8f0 !important;
+  padding: 0.5rem 0.7rem !important; /* Más compacto */
+  font-size: 0.85rem !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(5px) !important;
+}
+
+.p-field .p-error {
+  font-size: 0.7rem !important; /* Errores más pequeños */
+  margin-top: 0.15rem !important;
+}
+
+/* Validaciones de contraseña ultra compactas */
+.password-requirements {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Más pequeño */
+  gap: 0.4rem; /* Menos espacio */
+  margin: 0.75rem 0 0.5rem 0; /* Menos margen vertical */
+  padding: 0.6rem; /* Menos padding */
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 6px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.requirement-item {
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem; /* Muy compacto */
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  font-size: 0.75rem; /* Más pequeño */
+  font-weight: 500;
+  line-height: 1.2; /* Líneas más compactas */
+}
+
+.requirement-item:hover {
+  transform: translateX(2px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.requirement-item.valid {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #166534;
+  border-left: 2px solid #22c55e;
+}
+
+.requirement-item:not(.valid) {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  color: #991b1b;
+  border-left: 2px solid #ef4444;
+}
+
+.requirement-item i {
+  margin-right: 0.4rem;
+  font-size: 0.8rem;
+  width: 0.9rem;
+  text-align: center;
+}
+
+.requirement-item.valid i {
+  color: #22c55e;
+}
+
+.requirement-item:not(.valid) i {
+  color: #ef4444;
+}
+
+/* Botón más compacto */
+.button-field {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem; /* Menos espacio arriba */
+}
+
+.button-field .p-button {
+  width: 200px; /* Más pequeño */
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.2);
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+/* Texto inferior más compacto */
+.text-center.mt-3 {
+  margin-top: 0.75rem !important; /* Menos espacio */
+}
+
+.text-center.mt-3 p {
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Responsive ultra compacto */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .register-card {
+    width: 95vw !important;
+    margin: 0.25rem;
+    max-width: none !important;
+  }
+  
+  .register-card .p-card-body {
+    padding: 1rem !important;
+  }
+  
+  .register-card h1 {
+    font-size: 1.4rem;
+  }
+  
+  .password-requirements {
+    grid-template-columns: 1fr;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+  }
+  
+  .button-field .p-button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card .p-card-body {
+    padding: 0.75rem !important;
+  }
+  
+  .form-row {
+    gap: 0.4rem;
+  }
+  
+  .register-card h1 {
+    font-size: 1.2rem;
+  }
+  
+  .password-requirements {
+    padding: 0.4rem;
+    margin: 0.4rem 0;
+  }
+  
+  .requirement-item {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* Efecto de fondo mejorado */
+.auth-form-container {
+  background: linear-gradient(135deg, 
+    var(--primary-color) 0%, 
+    var(--primary-color-dark) 25%,
+    var(--secondary-color) 75%, 
+    var(--secondary-color-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-form-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+  pointer-events: none;
+}
+
+
+/* Estilos mejorados para la paginación de PrimeNG */
+.p-paginator {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  margin-top: 1rem !important;
+}
+
+/* Botones de navegación de páginas más vistosos */
+.p-paginator .p-paginator-pages .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  color: white !important;
+  border: 2px solid #2563eb !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 0.75rem !important;
+  margin: 0 0.25rem !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 3px 6px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Efectos hover para los botones de paginación */
+.p-paginator .p-paginator-pages .p-paginator-page:hover,
+.p-paginator .p-paginator-first:hover,
+.p-paginator .p-paginator-prev:hover,
+.p-paginator .p-paginator-next:hover,
+.p-paginator .p-paginator-last:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border-color: #059669 !important;
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.5) !important;
+}
+
+/* Página activa con estilo especial */
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  border-color: #dc2626 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5) !important;
+  transform: scale(1.1) !important;
+}
+
+/* Estilos específicos para las flechas de navegación con colores más vibrantes */
+.p-paginator .p-paginator-first::before {
+  content: '⏮️';
+  font-size: 1.2rem;
+  margin-right: 0.25rem;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+.p-paginator .p-paginator-prev::before {
+  content: '⬅️';
+  font-size: 1.2rem;
+  margin-right: 0.25rem;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+.p-paginator .p-paginator-next::after {
+  content: '➡️';
+  font-size: 1.2rem;
+  margin-left: 0.25rem;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+.p-paginator .p-paginator-last::after {
+  content: '⏭️';
+  font-size: 1.2rem;
+  margin-left: 0.25rem;
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Iconos de las flechas más grandes y vistosos */
+.p-paginator .p-paginator-first .p-paginator-icon,
+.p-paginator .p-paginator-prev .p-paginator-icon,
+.p-paginator .p-paginator-next .p-paginator-icon,
+.p-paginator .p-paginator-last .p-paginator-icon {
+  font-size: 1.3rem !important;
+  font-weight: bold !important;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Botones deshabilitados */
+.p-paginator .p-paginator-first.p-disabled,
+.p-paginator .p-paginator-prev.p-disabled,
+.p-paginator .p-paginator-next.p-disabled,
+.p-paginator .p-paginator-last.p-disabled {
+  background: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Dropdown de filas por página más vistoso */
+.p-paginator .p-dropdown {
+  background: white !important;
+  border: 2px solid var(--primary-color) !important;
+  border-radius: 6px !important;
+  color: var(--primary-color) !important;
+  font-weight: 600 !important;
+}
+
+.p-paginator .p-dropdown:hover {
+  border-color: var(--secondary-color) !important;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2) !important;
+}
+
+/* Texto de información de páginas */
+.p-paginator .p-paginator-current {
+  color: var(--text-color) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* Estilos específicos para las flechas de navegación */
+.p-paginator .p-paginator-first::before {
+  content: '⏮️';
+  font-size: 1rem;
+  margin-right: 0.25rem;
+}
+
+.p-paginator .p-paginator-prev::before {
+  content: '⬅️';
+  font-size: 1rem;
+  margin-right: 0.25rem;
+}
+
+.p-paginator .p-paginator-next::after {
+  content: '➡️';
+  font-size: 1rem;
+  margin-left: 0.25rem;
+}
+
+.p-paginator .p-paginator-last::after {
+  content: '⏭️';
+  font-size: 1rem;
+  margin-left: 0.25rem;
+}
+
+/* Responsive para paginación */
+@media (max-width: 768px) {
+  .p-paginator {
+    padding: 0.5rem !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+  
+  .p-paginator .p-paginator-pages .p-paginator-page,
+  .p-paginator .p-paginator-first,
+  .p-paginator .p-paginator-prev,
+  .p-paginator .p-paginator-next,
+  .p-paginator .p-paginator-last {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.8rem !important;
+    margin: 0 0.1rem !important;
+  }
+  
+  .p-paginator .p-paginator-current {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+}
+
+/* Animación suave para cambios de página */
+.p-datatable .p-datatable-tbody {
+  transition: opacity 0.3s ease !important;
+}
+
+.p-datatable.p-datatable-loading .p-datatable-tbody {
+  opacity: 0.6 !important;
 }
